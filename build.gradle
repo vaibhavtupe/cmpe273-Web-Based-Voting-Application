@@ -1,0 +1,73 @@
+buildscript {
+    ext {
+        springBootVersion = '1.2.1.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+         classpath("com.googlecode.json-simple:json-simple:1.1")
+        //classpath("org.springframework.boot:spring-boot-starter-security")
+       // classpath("org.springframework.boot:spring-boot-starter-data-mongodb")
+       
+    }
+}
+
+//ext.springSecurityVersion = "3.2.1.RELEASE"
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot' 
+
+jar {
+    baseName = 'myvote'
+    version = '0.2.0'
+}
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-data-rest")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-security")          // for HTTP Basic Authentication
+    
+   
+
+    testCompile("org.springframework.boot:spring-boot-starter-test") 
+    compile("org.springframework.boot:spring-boot-starter-data-mongodb"){
+        exclude module: "spring-boot-starter-logging"
+        exclude module: "logback-classic"
+    }
+    
+     compile ("org.apache.kafka:kafka_2.10:0.8.2.1")                            // apache kafka dependencies
+    compile ("org.springframework:spring-context-support:4.1.5.RELEASE")
+    compile("com.googlecode.json-simple:json-simple:1.1")
+    
+    
+    
+ 
+}
+
+configurations {
+ compile.exclude group:'ch.qos.logback'
+}
+
+
+
+eclipse {
+    classpath {
+         containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+         containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
